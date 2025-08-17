@@ -55,6 +55,33 @@
             gap: 2rem;
         }
 
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+
+        .hamburger span {
+            width: 25px;
+            height: 3px;
+            background: #d4691b;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        .hamburger.active span:nth-child(1) {
+            transform: rotate(-45deg) translate(-5px, 6px);
+        }
+
+        .hamburger.active span:nth-child(2) {
+            opacity: 0;
+        }
+
+        .hamburger.active span:nth-child(3) {
+            transform: rotate(45deg) translate(-5px, -6px);
+        }
+
         .nav-links a {
             text-decoration: none;
             color: #333;
@@ -156,28 +183,68 @@
 
         .bakery-showcase {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
             gap: 2rem;
-            margin: 2rem 0;
+            margin: 3rem 0;
             justify-items: center;
         }
 
         .showcase-item {
-            font-size: 4rem;
-            animation: bounce 2s ease-in-out infinite;
-            filter: drop-shadow(0 4px 8px rgba(0,0,0,0.1));
+            position: relative;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            transition: transform 0.3s ease;
+            background: white;
+            width: 100%;
+            max-width: 250px;
         }
 
-        .showcase-item:nth-child(1) { animation-delay: 0s; }
-        .showcase-item:nth-child(2) { animation-delay: 0.2s; }
-        .showcase-item:nth-child(3) { animation-delay: 0.4s; }
-        .showcase-item:nth-child(4) { animation-delay: 0.6s; }
-        .showcase-item:nth-child(5) { animation-delay: 0.8s; }
+        .showcase-item:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
 
-        @keyframes bounce {
-            0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-            40% { transform: translateY(-10px); }
-            60% { transform: translateY(-5px); }
+        .showcase-image {
+            width: 100%;
+            height: 180px;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+
+        .showcase-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, rgba(212, 105, 27, 0.1), rgba(255, 107, 53, 0.1));
+        }
+
+        .showcase-label {
+            padding: 1rem;
+            text-align: center;
+            font-weight: bold;
+            color: #d4691b;
+            font-size: 1.1rem;
+        }
+
+        .showcase-item:nth-child(1) .showcase-image {
+            background-image: url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+        }
+        .showcase-item:nth-child(2) .showcase-image {
+            background-image: url('https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+        }
+        .showcase-item:nth-child(3) .showcase-image {
+            background-image: url('https://images.unsplash.com/photo-1509440159596-0249088772ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+        }
+        .showcase-item:nth-child(4) .showcase-image {
+            background-image: url('https://images.unsplash.com/photo-1499636136210-6f4ee915583e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+        }
+        .showcase-item:nth-child(5) .showcase-image {
+            background-image: url('https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
         }
 
         .hero h1 {
@@ -345,6 +412,45 @@
             cursor: pointer;
             font-size: 1rem;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-to-cart.adding {
+            background: #27ae60;
+            transform: scale(0.95);
+        }
+
+        .add-to-cart.added {
+            background: #27ae60;
+            animation: addedPulse 0.6s ease;
+        }
+
+        @keyframes addedPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .cart-notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: #27ae60;
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            transform: translateX(100%);
+            transition: transform 0.3s ease;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .cart-notification.show {
+            transform: translateX(0);
         }
 
         .add-to-cart:hover {
@@ -487,7 +593,29 @@
 
         @media (max-width: 768px) {
             .nav-links {
-                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: rgba(255, 255, 255, 0.98);
+                backdrop-filter: blur(10px);
+                flex-direction: column;
+                padding: 1rem;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+                transform: translateY(-10px);
+                opacity: 0;
+                visibility: hidden;
+                transition: all 0.3s ease;
+            }
+
+            .nav-links.active {
+                transform: translateY(0);
+                opacity: 1;
+                visibility: visible;
+            }
+
+            .hamburger {
+                display: flex;
             }
 
             .hero h1 {
@@ -497,13 +625,22 @@
             .products-grid {
                 grid-template-columns: 1fr;
             }
+
+            .bakery-showcase {
+                grid-template-columns: 1fr 1fr;
+                gap: 1rem;
+            }
+
+            .showcase-item {
+                max-width: none;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <nav class="container">
-            <div class="logo">🥐 Sweet Escape</div>
+            <div class="logo">🎂 Sweet Escape</div>
             <ul class="nav-links">
                 <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
                 <li><a href="#" onclick="showPage('about')">About</a></li>
@@ -511,9 +648,16 @@
                 <li><a href="#" onclick="showPage('order-cake')">Order Cake</a></li>
                 <li><a href="#" onclick="showPage('contact')">Contact</a></li>
             </ul>
-            <div class="cart-icon" onclick="showPage('cart')">
-                🛒
-                <span class="cart-count" id="cartCount">0</span>
+            <div style="display: flex; align-items: center; gap: 1rem;">
+                <div class="cart-icon" onclick="showPage('cart')">
+                    🛒
+                    <span class="cart-count" id="cartCount">0</span>
+                </div>
+                <div class="hamburger" onclick="toggleMobileMenu()">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
             </div>
         </nav>
     </header>
@@ -527,11 +671,26 @@
                     <p>Where every bite takes you to a world of heavenly flavors</p>
                     
                     <div class="bakery-showcase">
-                        <div class="showcase-item">🧁</div>
-                        <div class="showcase-item">🍰</div>
-                        <div class="showcase-item">🥐</div>
-                        <div class="showcase-item">🍪</div>
-                        <div class="showcase-item">🥧</div>
+                        <div class="showcase-item">
+                            <div class="showcase-image"></div>
+                            <div class="showcase-label">Artisan Cakes</div>
+                        </div>
+                        <div class="showcase-item">
+                            <div class="showcase-image"></div>
+                            <div class="showcase-label">Fresh Pastries</div>
+                        </div>
+                        <div class="showcase-item">
+                            <div class="showcase-image"></div>
+                            <div class="showcase-label">French Croissants</div>
+                        </div>
+                        <div class="showcase-item">
+                            <div class="showcase-image"></div>
+                            <div class="showcase-label">Gourmet Cookies</div>
+                        </div>
+                        <div class="showcase-item">
+                            <div class="showcase-image"></div>
+                            <div class="showcase-label">Classic Bread</div>
+                        </div>
                     </div>
                     
                     <a href="#" onclick="showPage('store')" class="cta-button">Discover Our Treats</a>
@@ -540,15 +699,15 @@
 
             <div class="features">
                 <div class="feature-card">
-                    <h3>🌟 Premium Quality</h3>
+                    <h3>Premium Quality</h3>
                     <p>We use only the finest ingredients sourced locally and internationally to create exceptional baked goods that exceed your expectations.</p>
                 </div>
                 <div class="feature-card">
-                    <h3>👩‍🍳 Artisan Made</h3>
+                    <h3>Artisan Made</h3>
                     <p>Every item is handcrafted by our skilled bakers who pour their passion and expertise into creating perfect treats just for you.</p>
                 </div>
                 <div class="feature-card">
-                    <h3>🚀 Quick Delivery</h3>
+                    <h3>Quick Delivery</h3>
                     <p>Fresh from our oven to your door! We ensure your treats arrive warm, fresh, and ready to create sweet memories.</p>
                 </div>
             </div>
@@ -721,6 +880,12 @@
         </div>
     </main>
 
+    <!-- Cart Notification -->
+    <div class="cart-notification" id="cartNotification">
+        <span>✅</span>
+        <span id="notificationText">Added to cart!</span>
+    </div>
+
     <script>
         // Store data
         const products = [
@@ -790,6 +955,35 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadProducts();
             updateCartDisplay();
+            
+            // Set up mobile menu functionality
+            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.querySelector('.nav-links');
+            
+            if (hamburger && navLinks) {
+                hamburger.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                    navLinks.classList.toggle('active');
+                    hamburger.classList.toggle('active');
+                });
+                
+                // Close mobile menu when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
+                        navLinks.classList.remove('active');
+                        hamburger.classList.remove('active');
+                    }
+                });
+                
+                // Close menu when clicking nav links
+                const navLinkItems = navLinks.querySelectorAll('a');
+                navLinkItems.forEach(link => {
+                    link.addEventListener('click', function() {
+                        navLinks.classList.remove('active');
+                        hamburger.classList.remove('active');
+                    });
+                });
+            }
         });
 
         // Navigation
@@ -807,12 +1001,34 @@
                 link.classList.remove('active');
             });
             
-            document.querySelector(`[onclick="showPage('${pageId}')"]`)?.classList.add('active');
+            const activeLink = document.querySelector(`[onclick="showPage('${pageId}')"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            // Close mobile menu
+            const navLinks = document.querySelector('.nav-links');
+            const hamburger = document.querySelector('.hamburger');
+            if (navLinks && hamburger) {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
             
             currentPage = pageId;
             
             if (pageId === 'cart') {
                 displayCart();
+            }
+        }
+
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navLinks = document.querySelector('.nav-links');
+            const hamburger = document.querySelector('.hamburger');
+            
+            if (navLinks && hamburger) {
+                navLinks.classList.toggle('active');
+                hamburger.classList.toggle('active');
             }
         }
 
@@ -878,15 +1094,32 @@
             // Reset quantity to 1 after adding
             qtyInput.value = 1;
             
-            // Show feedback
+            // Enhanced feedback with notification
             const button = event.target;
-            const originalText = button.textContent;
-            button.textContent = `Added ${quantity}!`;
-            button.style.background = '#27ae60';
+            button.classList.add('adding');
+            
             setTimeout(() => {
-                button.textContent = originalText;
-                button.style.background = '#d4691b';
-            }, 1500);
+                button.classList.remove('adding');
+                button.classList.add('added');
+                showCartNotification(product.name, quantity);
+                
+                setTimeout(() => {
+                    button.classList.remove('added');
+                }, 600);
+            }, 200);
+        }
+
+        // Show cart notification
+        function showCartNotification(productName, quantity) {
+            const notification = document.getElementById('cartNotification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = `${quantity}x ${productName} added to cart!`;
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
         }
 
         // Update cart display
@@ -1008,7 +1241,7 @@
             
             message += "\nPlease confirm my custom cake order. Thank you! 😊";
             
-            const whatsappNumber = "918210650013"; // Replace with your number
+            const whatsappNumber = "1234567890"; // Replace with your number
             const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`;
             
             window.open(whatsappURL, '_blank');
@@ -1038,8 +1271,23 @@
         // Mobile menu toggle (for responsive design)
         function toggleMobileMenu() {
             const navLinks = document.querySelector('.nav-links');
-            navLinks.style.display = navLinks.style.display === 'flex' ? 'none' : 'flex';
+            const hamburger = document.querySelector('.hamburger');
+            
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('active');
         }
+
+        // Close mobile menu when clicking outside
+        document.addEventListener('click', function(e) {
+            const navLinks = document.querySelector('.nav-links');
+            const hamburger = document.querySelector('.hamburger');
+            const nav = document.querySelector('nav');
+            
+            if (nav && navLinks && hamburger && !nav.contains(e.target) && navLinks.classList.contains('active')) {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+            }
+        });
 
         // Smooth scrolling for better UX
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
