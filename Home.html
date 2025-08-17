@@ -19,6 +19,14 @@
             min-height: 100vh;
         }
 
+        body.mobile-bg {
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://images.unsplash.com/photo-1586985289688-ca3cf47d3e6e?ixlib=rb-4.0.3&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+        }
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
@@ -606,6 +614,7 @@
                 opacity: 0;
                 visibility: hidden;
                 transition: all 0.3s ease;
+                z-index: 999;
             }
 
             .nav-links.active {
@@ -618,8 +627,21 @@
                 display: flex;
             }
 
+            .hero {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+            }
+
             .hero h1 {
-                font-size: 2.5rem;
+                font-size: 2.2rem;
+                color: #333;
+                text-shadow: 2px 2px 4px rgba(255,255,255,0.8);
+            }
+
+            .hero p {
+                font-size: 1rem;
+                padding: 0 1rem;
+                color: #555;
             }
 
             .products-grid {
@@ -633,6 +655,49 @@
 
             .showcase-item {
                 max-width: none;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(5px);
+            }
+
+            /* Hide feature cards on mobile */
+            .features {
+                display: none;
+            }
+
+            .contact-form {
+                margin: 1rem 0;
+                padding: 1.5rem;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+            }
+
+            .cart-notification {
+                right: 10px;
+                left: 10px;
+                transform: translateY(-100%);
+            }
+
+            .cart-notification.show {
+                transform: translateY(0);
+            }
+
+            /* Enhanced mobile page backgrounds */
+            .page {
+                background: rgba(255, 255, 255, 0.1);
+                backdrop-filter: blur(5px);
+                border-radius: 15px;
+                margin: 1rem;
+                padding: 1rem;
+            }
+
+            .product-card {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
+            }
+
+            .cart-item {
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(10px);
             }
         }
     </style>
@@ -640,8 +705,8 @@
 <body>
     <header>
         <nav class="container">
-            <div class="logo">🎂 Sweet Escape</div>
-            <ul class="nav-links">
+            <div class="logo" onclick="showPage('home')" style="cursor: pointer;">🎂 Sweet Escape</div>
+            <ul class="nav-links" id="navLinks">
                 <li><a href="#" onclick="showPage('home')" class="active">Home</a></li>
                 <li><a href="#" onclick="showPage('about')">About</a></li>
                 <li><a href="#" onclick="showPage('store')">Store</a></li>
@@ -653,7 +718,7 @@
                     🛒
                     <span class="cart-count" id="cartCount">0</span>
                 </div>
-                <div class="hamburger" onclick="toggleMobileMenu()">
+                <div class="hamburger" onclick="toggleMobileMenu()" id="hamburgerMenu">
                     <span></span>
                     <span></span>
                     <span></span>
@@ -955,36 +1020,91 @@
         document.addEventListener('DOMContentLoaded', function() {
             loadProducts();
             updateCartDisplay();
+            setupMobileMenu();
+            setupMobileBackground();
+        });
+
+        // Setup mobile background
+        function setupMobileBackground() {
+            function checkMobile() {
+                if (window.innerWidth <= 768) {
+                    document.body.classList.add('mobile-bg');
+                } else {
+                    document.body.classList.remove('mobile-bg');
+                }
+            }
             
-            // Set up mobile menu functionality
-            const hamburger = document.querySelector('.hamburger');
-            const navLinks = document.querySelector('.nav-links');
+            // Check on load
+            checkMobile();
+            
+            // Check on resize
+            window.addEventListener('resize', checkMobile);
+        }
+
+        // Set up mobile menu
+        function setupMobileMenu() {
+            const hamburger = document.getElementById('hamburgerMenu');
+            const navLinks = document.getElementById('navLinks');
             
             if (hamburger && navLinks) {
-                hamburger.addEventListener('click', function(e) {
+                // Remove any existing event listeners
+                hamburger.replaceWith(hamburger.cloneNode(true));
+                const newHamburger = document.getElementById('hamburgerMenu');
+                
+                newHamburger.addEventListener('click', function(e) {
+                    e.preventDefault();
                     e.stopPropagation();
-                    navLinks.classList.toggle('active');
-                    hamburger.classList.toggle('active');
+                    console.log('Hamburger clicked'); // Debug log
+                    toggleMobileMenu();
                 });
                 
-                // Close mobile menu when clicking outside
+                // Close menu when clicking outside
                 document.addEventListener('click', function(e) {
-                    if (!hamburger.contains(e.target) && !navLinks.contains(e.target)) {
-                        navLinks.classList.remove('active');
-                        hamburger.classList.remove('active');
+                    if (!newHamburger.contains(e.target) && !navLinks.contains(e.target)) {
+                        closeMobileMenu();
                     }
                 });
-                
-                // Close menu when clicking nav links
-                const navLinkItems = navLinks.querySelectorAll('a');
-                navLinkItems.forEach(link => {
-                    link.addEventListener('click', function() {
-                        navLinks.classList.remove('active');
-                        hamburger.classList.remove('active');
-                    });
-                });
             }
-        });
+        }
+
+        // Mobile menu functions
+        function toggleMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburgerMenu');
+            
+            console.log('Toggle mobile menu called'); // Debug log
+            
+            if (navLinks && hamburger) {
+                const isActive = navLinks.classList.contains('active');
+                if (isActive) {
+                    closeMobileMenu();
+                } else {
+                    openMobileMenu();
+                }
+            }
+        }
+
+        function openMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburgerMenu');
+            
+            if (navLinks && hamburger) {
+                navLinks.classList.add('active');
+                hamburger.classList.add('active');
+                console.log('Menu opened'); // Debug log
+            }
+        }
+
+        function closeMobileMenu() {
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburgerMenu');
+            
+            if (navLinks && hamburger) {
+                navLinks.classList.remove('active');
+                hamburger.classList.remove('active');
+                console.log('Menu closed'); // Debug log
+            }
+        }
 
         // Navigation
         function showPage(pageId) {
@@ -1007,12 +1127,7 @@
             }
             
             // Close mobile menu
-            const navLinks = document.querySelector('.nav-links');
-            const hamburger = document.querySelector('.hamburger');
-            if (navLinks && hamburger) {
-                navLinks.classList.remove('active');
-                hamburger.classList.remove('active');
-            }
+            closeMobileMenu();
             
             currentPage = pageId;
             
@@ -1021,14 +1136,22 @@
             }
         }
 
-        // Mobile menu toggle
+        // Mobile menu toggle (legacy function for onclick)
         function toggleMobileMenu() {
-            const navLinks = document.querySelector('.nav-links');
-            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburgerMenu');
+            
+            console.log('Legacy toggle called'); // Debug log
             
             if (navLinks && hamburger) {
-                navLinks.classList.toggle('active');
-                hamburger.classList.toggle('active');
+                const isActive = navLinks.classList.contains('active');
+                if (isActive) {
+                    navLinks.classList.remove('active');
+                    hamburger.classList.remove('active');
+                } else {
+                    navLinks.classList.add('active');
+                    hamburger.classList.add('active');
+                }
             }
         }
 
@@ -1277,15 +1400,14 @@
             hamburger.classList.toggle('active');
         }
 
-        // Close mobile menu when clicking outside
+        // Close mobile menu when clicking outside (updated)
         document.addEventListener('click', function(e) {
-            const navLinks = document.querySelector('.nav-links');
-            const hamburger = document.querySelector('.hamburger');
+            const navLinks = document.getElementById('navLinks');
+            const hamburger = document.getElementById('hamburgerMenu');
             const nav = document.querySelector('nav');
             
             if (nav && navLinks && hamburger && !nav.contains(e.target) && navLinks.classList.contains('active')) {
-                navLinks.classList.remove('active');
-                hamburger.classList.remove('active');
+                closeMobileMenu();
             }
         });
 
