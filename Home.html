@@ -213,7 +213,7 @@
 
         .showcase-image {
             width: 100%;
-            height: 180px;
+            height: 300px;
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
@@ -239,20 +239,22 @@
         }
 
         .showcase-item:nth-child(1) .showcase-image {
-            background-image: url('https://images.unsplash.com/photo-1578985545062-69928b1d9587?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+            background-image: url('KidBirthday.jpeg');
         }
+
         .showcase-item:nth-child(2) .showcase-image {
-            background-image: url('https://images.unsplash.com/photo-1565958011703-44f9829ba187?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+            background-image: url('Aniversary.jpeg');
         }
         .showcase-item:nth-child(3) .showcase-image {
-            background-image: url('https://images.unsplash.com/photo-1509440159596-0249088772ff?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+            background-image: url('AniversaryCake.jpeg');
         }
         .showcase-item:nth-child(4) .showcase-image {
-            background-image: url('https://images.unsplash.com/photo-1499636136210-6f4ee915583e?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+            background-image: url('Customizedcake.jpeg');
         }
         .showcase-item:nth-child(5) .showcase-image {
-            background-image: url('https://images.unsplash.com/photo-1464349095431-e9a21285b5f3?ixlib=rb-4.0.3&auto=format&fit=crop&w=400&q=80');
+            background-image: url('girlbday.jpeg');
         }
+
 
         .hero h1 {
             font-size: 3.5rem;
@@ -284,6 +286,25 @@
             transform: translateY(-2px);
             box-shadow: 0 10px 20px rgba(212, 105, 27, 0.3);
         }
+
+	.cakeOrder-button {
+    	    background: linear-gradient(135deg, #d4691b 0%, #ff6b35 100%);
+            color: white;
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 1rem; /* spacing above the CTA button */
+	}
+
+	.cakeOrder-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(212, 105, 27, 0.3);
+	}
 
         .features {
             display: grid;
@@ -700,27 +721,27 @@
                     <div class="bakery-showcase">
                         <div class="showcase-item">
                             <div class="showcase-image"></div>
-                            <div class="showcase-label">Artisan Cakes</div>
+                            <div class="showcase-label">Birthday Cakes</div>
                         </div>
                         <div class="showcase-item">
                             <div class="showcase-image"></div>
-                            <div class="showcase-label">Fresh Pastries</div>
+                            <div class="showcase-label">Anniversary Cakes</div>
                         </div>
                         <div class="showcase-item">
                             <div class="showcase-image"></div>
-                            <div class="showcase-label">French Croissants</div>
+                            <div class="showcase-label">Anniversary Cakes</div>
                         </div>
                         <div class="showcase-item">
                             <div class="showcase-image"></div>
-                            <div class="showcase-label">Gourmet Cookies</div>
+                            <div class="showcase-label">Birthday Cakes</div>
                         </div>
                         <div class="showcase-item">
                             <div class="showcase-image"></div>
-                            <div class="showcase-label">Classic Bread</div>
+                            <div class="showcase-label">Birthday Cakes</div>
                         </div>
                     </div>
-                    
-                    <a href="#" onclick="showPage('store')" class="cta-button">Discover Our Treats</a>
+                    <a href="#" onclick="showPage('order-cake')" class="cakeOrder-button">🎂 Order Cake 🍰</a>
+                    <a href="#" onclick="showPage('store')" class="cta-button">🍪 Visit Store 🧁</a>
                 </div>
             </div>
 
