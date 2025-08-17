@@ -181,13 +181,20 @@
             z-index: 1;
         }
 
-        .bakery-showcase {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin: 3rem 0;
-            justify-items: center;
-        }
+.bakery-showcase {
+  display: flex;
+  gap: 2rem;           /* keep your spacing */
+  margin: 3rem 0;
+  overflow-x: auto;     /* enables horizontal scroll */
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  padding-bottom: .5rem; /* a little room for the scrollbar */
+}
+.bakery-showcase::-webkit-scrollbar { height: 8px; }
+.bakery-showcase::-webkit-scrollbar-thumb {
+  background: #d4691b;
+  border-radius: 10px;
+}
 
         .showcase-item {
             position: relative;
@@ -196,8 +203,8 @@
             box-shadow: 0 8px 25px rgba(0,0,0,0.15);
             transition: transform 0.3s ease;
             background: white;
-            width: 100%;
-            max-width: 250px;
+	    flex: 0 0 250px;     /* fixed slide width */
+	    scroll-snap-align: start;
         }
 
         .showcase-item:hover {
